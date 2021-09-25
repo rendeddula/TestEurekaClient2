@@ -1,0 +1,53 @@
+server:
+  port: 8763
+spring:
+  application:
+    name: eureka-test-client1
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 10
+    health-check-url-path: /health
+  client:
+    initialInstanceInfoReplicationIntervalSeconds: 15
+    instanceInfoReplicationIntervalSeconds: 20
+    fetchRegistry: true
+    registryFetchIntervalSeconds: 10
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    healthcheck: 
+      enabled: true    
+logging:
+  file:
+    name: ${spring.application.name}
+    path: ./logs 
+feign:
+  hystrix:
+    enabled: true
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+endpoints:
+  cors:
+    allowed-origins:
+    - '*'
+    allowed-methods:
+    - GET
